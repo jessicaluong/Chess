@@ -3,10 +3,6 @@ package game;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-
 /**
  * This method looks for checks and checkmates on the board.
  */
