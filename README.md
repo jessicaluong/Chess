@@ -16,6 +16,10 @@ This is a two-player chess game with a checkmate detector. This program was writ
 ## Pawn Promotion
 A dialog shows up when the pawn reaches the end of the board to prompt the player to pick the piece they want to promote the pawn to.
 
+<p align="center">
+<img width="500" alt="pawn_promotion" src="https://github.com/jessicaluong/Chess/assets/96930184/ab36d7e1-64c7-42af-af26-96b36861ad41">
+</p>
+
 ## Checkmate Detector
 - Checks are tracked to prevent players from moving into check or staying in check
 - The checkmate detector uses move generation and move validation to determine when there are no more legal moves
