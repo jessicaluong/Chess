@@ -16,8 +16,15 @@ This is a two-player chess game with a checkmate detector. This program was writ
 ## Pawn Promotion
 A dialog shows up when the pawn reaches the end of the board to prompt the player to pick the piece they want to promote the pawn to.
 
-### Testing
+## Checkmate Detector
+- Checks are tracked to prevent players from moving into check or staying in check
+- The checkmate detector uses move generation and move validation to determine when there are no more legal moves
 
+<p align="center">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/96930184/149872750-397cd76b-d2be-47c0-8380-9279b3e418aa.png">
+</p>
+
+## Testing
 The GUI component used for this is a JOptionPane which required a mock JOptionPane to automate testing. This uses an interface:
 
 ```java
@@ -46,14 +53,6 @@ public class BishopMockOptionPane extends DefaultOptionPane {
 	}
 }
 ```
-## Checkmate Detector
-- Checks are tracked to prevent players from moving into check or staying in check
-- The checkmate detector uses move generation and move validation to determine when there are no more legal moves
-
-<p align="center">
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/96930184/149872750-397cd76b-d2be-47c0-8380-9279b3e418aa.png">
-</p>
-
 ## Features To Add
 Two moves that still need to be added to the game are en passant and castling. Implementing this requires the tracking of all previous moves.
 
