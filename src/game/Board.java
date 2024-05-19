@@ -62,7 +62,7 @@ public class Board {
 	private void displayBoard() {
 		frame.add(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Chess");
+		frame.setTitle("White to Move");
 		frame.setVisible(true);
 	}
 	

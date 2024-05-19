@@ -21,7 +21,7 @@ public class MoveListener extends MouseAdapter {
 	private Square initialSquare; // save square that's clicked 
 	private Piece pieceHeld; 
 	private Board board;
-	private boolean isWhiteTurn;
+  private String playerTurn; 
 	Collection<Square> pieceHeldMoves;
 	CheckmateDetector checkmateDetector; 
 	OptionPane optionPane;
@@ -32,24 +32,18 @@ public class MoveListener extends MouseAdapter {
 	 */
 	public MoveListener(Board chessBoard) {
 		this.board = chessBoard;
-		isWhiteTurn = true;
+    playerTurn = "White";
 		checkmateDetector = new CheckmateDetector(board);
-		//optionPane = new BishopMockOptionPane();
 		optionPane = new DefaultOptionPane();
 	}
-	
-	/**
+
+  /**
 	 * Alternate player turns and sets title on board to indicate whose turn it is.
 	 */
-	private void swapTurns() {
-		if (isWhiteTurn) {
-			isWhiteTurn = false;
-			board.setTitle("Black to Move");
-		} else {
-			isWhiteTurn = true;
-			board.setTitle("White to Move");
-		}
-	}
+  private void setPlayer() {
+    playerTurn = (playerTurn.equals("White")) ? "Black" : "White"; 
+    board.setTitle(playerTurn + " to Move");
+  }
 	
 	/**
 	 * Determines whether a player can go or not
@@ -58,16 +52,16 @@ public class MoveListener extends MouseAdapter {
 	private boolean isValidTurn(Square initialSquare, Square clickedSquare) {
 		if (!clickedSquare.hasPiece() || initialSquare != null) {
 			return true;
-		} else if (isWhiteTurn && clickedSquare.getPiece().isWhite()) {
+		} else if (playerTurn.equals("White") && clickedSquare.getPiece().isWhite()) {
 			return true;
-		} else if (!isWhiteTurn && !clickedSquare.getPiece().isWhite()) {
+		} else if (!playerTurn.equals("White") && !clickedSquare.getPiece().isWhite()) {
 			return true;
 		} 
 		return false;	
 	}
 	
 	private void holdPiece(Square clickedSquare) {
-		System.out.println("has piece");
+		// System.out.println("has piece");
 		this.initialSquare = clickedSquare;
 		pieceHeld = clickedSquare.getPiece();
 		clickedSquare.setBackground(Color.LIGHT_GRAY);
@@ -81,21 +75,20 @@ public class MoveListener extends MouseAdapter {
 		clickedSquare.setBackground(clickedSquare.getSquareColor());
 		initialSquare.setBackground(initialSquare.getSquareColor());
 		initialSquare = null;
-		swapTurns(); 
+		setPlayer(); 
 	}
 	
 	private void pieceToEmptySquare(Square clickedSquare) {
-		System.out.println("moving from (" + initialSquare.getRow() + "," + initialSquare.getCol() + ") to (" + clickedSquare.getRow() + "," + clickedSquare.getCol() +")");
+		// System.out.println("moving from (" + initialSquare.getRow() + "," + initialSquare.getCol() + ") to (" + clickedSquare.getRow() + "," + clickedSquare.getCol() +")");
 		clickedSquare.setPiece(pieceHeld);
 		clickedSquare.setBackground(clickedSquare.getSquareColor());
 		initialSquare.setBackground(initialSquare.getSquareColor());
 		if (initialSquare != clickedSquare) {
-			swapTurns(); 
+      setPlayer(); 
 		}
 		initialSquare = null;
 	}
 	
-
 	public void setOptionPane(OptionPane option) {
 		this.optionPane = option;
 	}
@@ -142,7 +135,6 @@ public class MoveListener extends MouseAdapter {
 		}
 	}
 	
-	
 	private void checkPawnPromotion(Square clickedSquare) {
 		if (clickedSquare.getPiece().getType().equals("Pawn")) {
 			Piece pawn = clickedSquare.getPiece();
@@ -160,42 +152,40 @@ public class MoveListener extends MouseAdapter {
 
 		Square clickedSquare = (Square) e.getSource();
 
-		if (isValidTurn(initialSquare, clickedSquare)) {
+		if (!isValidTurn(initialSquare, clickedSquare) || (!clickedSquare.hasPiece() && initialSquare == null)) {
+      board.setTitle(playerTurn + " to Move - Please select " + playerTurn + " piece"); 
+      return;
+    }
 
-			// gives player a piece to hold
-			if (clickedSquare.hasPiece() && initialSquare == null) {
-				holdPiece(clickedSquare);
-				pieceHeldMoves = pieceHeld.getPossibleMoves(board);
-				
-			// allows piece to move back to its initial square
-			} else if (initialSquare != null && initialSquare == clickedSquare) {
-				pieceToEmptySquare(clickedSquare);
+    board.setTitle(playerTurn + " to Move"); 
 
-			} else if (initialSquare != null && pieceHeldMoves.contains(clickedSquare) && !checkmateDetector.willBeInCheck(initialSquare, clickedSquare, pieceHeld)) {
-				
-				initialSquare.removePieceFromSquare();
+    // gives player a piece to hold
+    if (clickedSquare.hasPiece() && initialSquare == null) {
+      holdPiece(clickedSquare);
+      pieceHeldMoves = pieceHeld.getPossibleMoves(board);
+      board.setTitle(playerTurn + " to Move - " + pieceHeld.getType() + " selected"); 
+      
+    // allows piece to move back to its initial square
+    } else if (initialSquare != null && initialSquare == clickedSquare) {
+      pieceToEmptySquare(clickedSquare);
 
-				// move piece to a space with a piece of a different color - captures the other piece
-				if (clickedSquare.hasPiece()) {
-					capturePiece(clickedSquare);
-				// move piece to empty space
-				} else {
-					pieceToEmptySquare(clickedSquare);
-				}
-				
-				// check if the move put opponent in check 
-				checkmateDetector.isOpponentInCheck(pieceHeld);
-				
-				// check if pawn is eligible for promotion
-				checkPawnPromotion(clickedSquare);
-	
-			// if player is not holding a piece and clicks an empty square, nothing happens 
-			} else if (!clickedSquare.hasPiece() && initialSquare == null) {
-				System.out.println("do nothing"); 
-			}
-		} else {
-			System.out.println("wrong turn");
-		}			
+    } else if (initialSquare != null && pieceHeldMoves.contains(clickedSquare) && !checkmateDetector.willBeInCheck(initialSquare, clickedSquare, pieceHeld)) {
+      initialSquare.removePieceFromSquare();
+
+      // move piece to a space with a piece of a different color - captures the other piece
+      if (clickedSquare.hasPiece()) {
+        capturePiece(clickedSquare);
+      // move piece to empty space
+      } else {
+        pieceToEmptySquare(clickedSquare);
+      }
+      
+      checkmateDetector.isOpponentInCheck(pieceHeld);
+      checkPawnPromotion(clickedSquare);
+
+    } else {
+      board.setTitle(playerTurn + " to Move - Invalid move for " + initialSquare.getPiece().getType()); 
+    }
 	}
 	
 	// Change color of the square to indicate it is pressed.
