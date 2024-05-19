@@ -57,5 +57,5 @@ public class BishopMockOptionPane extends DefaultOptionPane {
 ## Features To Add
 Two moves that still need to be added to the game are en passant and castling. Implementing this requires the tracking of all previous moves.
 
-## Piece Images
-The piece images are from wikipedia.
+## Credits
+The images used for the chess pieces in this project are sourced from the ["Rules of Chess" page on Wikipedia](https://en.wikipedia.org/wiki/Rules_of_chess#Initial_setup), specifically from the "Initial Setup" section. 
