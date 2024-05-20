@@ -25,7 +25,6 @@ This section provides instructions on how to set up and run the application thro
 
 3. Create the output directory: 
     ```bash
-    cd Chess
     mkdir -p bin
     ```
 
