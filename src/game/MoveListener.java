@@ -69,7 +69,7 @@ public class MoveListener extends MouseAdapter {
 	}
 	
 	private void capturePiece(Square clickedSquare) {
-		System.out.println("capture piece");
+		// System.out.println("capture piece");
 		board.removePieceFromBoard(clickedSquare.getPiece());
 		clickedSquare.setPiece(pieceHeld);
 		clickedSquare.setBackground(clickedSquare.getSquareColor());

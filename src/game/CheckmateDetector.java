@@ -103,7 +103,6 @@ public class CheckmateDetector {
 		
 	}
 	
-	//TODO rewrite without print statements 
 	/**
 	 * Checks if the current player's move will put their own king in check.
 	 */
@@ -117,12 +116,12 @@ public class CheckmateDetector {
 		if (pieceHeld.isWhite()) {
 			inCheck = isWhiteInCheck();
 			if (inCheck) {
-				System.out.println("White king will be in check with this move.");
+        board.setTitle("Invalid move - White king will be in check with this move.");
 			}	
 		} else {
 			inCheck = isBlackInCheck();
 			if (inCheck) {
-				System.out.println("Black king will be in check with this move.");
+        board.setTitle("Invalid move - Black king will be in check with this move.");
 			}
 		}
 		
