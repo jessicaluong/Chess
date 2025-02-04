@@ -110,12 +110,24 @@ Example of a MockOptionPane that is used during testing:
 ```java
 public class BishopMockOptionPane extends DefaultOptionPane {
 	@Override
+
 	public int showOptionDialog(JPanel component, JLabel label, String title, int optionType, int messageType,
 			ImageIcon icon, Object[] options, Object initialValue) {
 		return 2;
 	}
 }
 ```
+
+## Test Coverage
+Current test coverage (measured using VSCode Java Test Runner):
+- Statement Coverage: 96.83% (458/473 statements)
+- Function Coverage: 95.95% (71/74 functions)
+- Branch Coverage: 93.61% (249/266 branches)
+
+Note: The main Game class is intentionally excluded from test coverage as it serves only as an application entry point with no business logic.
+
+<img width="308" alt="test_coverage" src="https://github.com/user-attachments/assets/6d3376d1-10e5-490a-9e09-7362085fbd12" />
+
 ## Features To Add
 Two moves that still need to be added to the game are en passant and castling. Implementing this requires the tracking of all previous moves.
 
